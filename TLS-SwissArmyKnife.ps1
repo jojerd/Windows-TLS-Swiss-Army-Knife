@@ -2,6 +2,7 @@
 Created By Josh Jerdon  
 Created on 1/20/2022
 Version 1.0
+Version 1.01
 
 For Disabling SSL 2.0 / SSL 3.0 and Enabling TLS 1.2 for ADFS and Web Application Proxy Servers. I also created a function to test the server for currently
 enabled Protocols that will dump out to a CSV report.
@@ -28,15 +29,18 @@ Date cert was issued, and date cert is to expire, key length, signature, cipher 
 
 -DisableSSL: Just disables SSL 2.0 and SSL 3.0, it will not do anything outside of that.
 
--EnableTLS11: Enables TLS 1.1, usually is enabled by default but just in case you want quickly reverse a TLS 1.1 disable.
+-DisableTLS10: Will just disable TLS 1.0 (BE VERY CAREFUL WITH THIS AS THIS CAN CAUSE LEGACY APPLICATIONS TO STOP WORKING!!!)
+
+-DisableTLS11: This will disable TLS 1.1, while not required is an option in case you want to test.
+
+-EnableTLS10: Enables TLS 1.0, usually is already enabled by default but just in case you want to quickly reverse a TLS 1.0 disable change.
+
+-EnableTLS11: Enables TLS 1.1, usually is already enabled by default but just in case you want to quickly reverse a TLS 1.1 disable change.
 
 -EnableTLS12: Just enables TLS 1.2 and will not do anything outside of that.
 
--DisableTLS10: Will just disable TLS 1.0 (BE VERY CAREFUL WITH THIS AS THIS CAN CAUSE LEGACY APPLICATIONS TO STOP WORKING!!!)
-
--DisableTLS11: This will disable TLS 1.1, while not required is an option in case you need to roll back a TLS 1.1 disable change quickly.
-
--SecureMe: Disables SSL 2.0 / SSL 3.0 and enables TLS 1.2. It does not touch TLS 1.1. You can disable TLS 1.1 with the above switch if you choose.
+-SecureMe: Disables SSL 2.0 / SSL 3.0, TLS 1.0 and enables TLS 1.2. It does not touch TLS 1.1. You can disable TLS 1.1 with the above switch if you choose. 
+ONLY USE THIS SWITCH IF YOU ARE SURE YOU HAVE NO LEGACY APPLICATIONS THAT REQUIRE TLS 1.0!!!!!!
 
 Version History
 
@@ -44,11 +48,16 @@ Version History
 
 Initial release
 
+2022JAN20
+
+Version 1.01: Added Enable TLS 1.0 switch as it was overlooked upon initial release. Fixed Typos in ReadMe.
+
 #>
 [CmdletBinding()]
 param (
     [switch]$EnabledProtocols,
     [switch]$DisableSSL,
+    [switch]$EnableTLS10,
     [switch]$EnableTLS11,
     [switch]$EnableTLS12,
     [switch]$DisableTLS10,
@@ -199,6 +208,45 @@ function DisableSSL {
     Read-Host -Prompt "Hit Enter to Exit"
 }
 
+function EnableTLS10 {
+    if ($PSVersionTable.PSVersion.Major -gt 3) {
+        #Checking Powershell Version to Ensure Script Works as Intended.
+        Write-Host "PowerShell meets minimum version requirements, continuing" -ForegroundColor Green
+        Start-Sleep -Seconds 3
+        Clear-Host
+    }
+    else {
+        Write-Host "PowerShell does not meet minimum version requirements To Continue" -ForegroundColor Red
+        Write-Error "PowerShell needs to be at least Version 3 or higher." -ErrorAction Stop
+        Exit    
+    }
+    # Check if script has been executed as an Administrator.
+    $Admin = [bool](([System.Security.Principal.WindowsIdentity]::GetCurrent()).groups -match "S-1-5-32-544")
+    if ($Admin -eq 'True') {
+        Write-Host " "
+        Write-Host "Script was executed with elevated permissions, continuing..." -ForegroundColor Green
+        Start-Sleep -Seconds 3
+        Clear-Host   
+    }
+    # If script is not executed as an Administrator, stop the script.
+    else {
+        Write-Error 'This Script needs to be executed under Powershell with Administrative Privileges...' -ErrorAction Stop
+    }
+   
+    $Writable = $true
+    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client")
+    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server”)
+    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+
+    Write-Host " "
+    Write-Host " "
+    Write-Host "TLS 1.0 has been Enabled, you will need to restart the system for the changes to take effect" -ForegroundColor Green
+    Read-Host -Prompt "Hit Enter to Exit"
+    
+}
 function EnableTLS11 {
     if ($PSVersionTable.PSVersion.Major -gt 3) {
         #Checking Powershell Version to Ensure Script Works as Intended.
@@ -434,7 +482,8 @@ function DoItAll {
 }
 if ($EnabledProtocols) { Get-EnabledProtocols; Clear-Host; Exit }
 if ($DisableSSL) { DisableSSL; Clear-Host; Exit }
-if ($EnableTLS11) {EnableTLS11; Clear-Host; Exit}
+if ($EnableTLS10) {EnableTLS10; Clear-Host; Exit }
+if ($EnableTLS11) { EnableTLS11; Clear-Host; Exit }
 if ($EnableTLS12) { EnableTLS12; Clear-Host; Exit }
 if ($DisableTLS10) { DisableTLS10; Clear-Host; Exit }
 if ($DisableTLS11) { DisableTLS11; Clear-Host; Exit }

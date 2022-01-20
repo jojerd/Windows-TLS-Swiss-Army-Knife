@@ -5,7 +5,7 @@ or higher. Does require Administrative Privileges to be used during execution if
 # Requirements
 
 Administrative Permissions during execution of Enable / Disable switches as registry is being changed.
-PowerShell 3.0 or higher. I do have the script check for PowerShell version requirements and will error out and stop if at least version 3.0 oor higher is not detected.
+PowerShell 3.0 or higher. I do have the script check for PowerShell version requirements and will error out and stop if at least version 3.0 or higher is not detected.
 
 # Script Execution
 
@@ -19,15 +19,17 @@ Open a PowerShell Window as an Administrator and browse to the location the scri
 
 -DisableSSL: Just disables SSL 2.0 and SSL 3.0, it will not do anything outside of that.
 
--EnableTLS11: Enables TLS 1.1, usually is enabled by default but just in case you want quickly reverse a TLS 1.1 disable.
+-DisableTLS10: Will just disable TLS 1.0 (BE VERY CAREFUL WITH THIS AS THIS CAN CAUSE LEGACY APPLICATIONS TO STOP WORKING!!!)
+
+-EnableTLS10: Enables TLS 1.0, usually is already enabled by default but just in case you want to quickly reverse a TLS 1.0 disable change.
+
+-EnableTLS11: Enables TLS 1.1, usually is already enabled by default but just in case you want to quickly reverse a TLS 1.1 disable change.
 
 -EnableTLS12: Just enables TLS 1.2 and will not do anything outside of that.
 
--DisableTLS10: Will just disable TLS 1.0 (BE VERY CAREFUL WITH THIS AS THIS CAN CAUSE LEGACY APPLICATIONS TO STOP WORKING!!!)
+-DisableTLS11: This will disable TLS 1.1, while not required is an option in case you want to test.
 
--DisableTLS11: This will disable TLS 1.1, while not required is an option in case you need to roll back a TLS 1.1 disable change quickly.
-
--SecureMe: Disables SSL 2.0 / SSL 3.0 and enables TLS 1.2. It does not touch TLS 1.1. You can disable TLS 1.1 with the above switch if you choose.
+-SecureMe: Disables SSL 2.0 / SSL 3.0, TLS 1.0 and enables TLS 1.2. It does not touch TLS 1.1. You can disable TLS 1.1 with the above switch if you choose. ONLY USE THIS SWITCH IF YOU ARE SURE YOU HAVE NO LEGACY APPLICATIONS THAT REQUIRE TLS 1.0!!!!!!
 
 
 
