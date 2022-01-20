@@ -5,7 +5,7 @@ or higher. Does require Administrative Privileges to be used during execution if
 # Requirements
 
 Administrative Permissions during execution of Enable / Disable switches as registry is being changed.
-PowerShell 3.0 or higher. I do have the script check for PowerShell version requirements and will error out and stop if at least version 3.0 oor higher is not detected.
+PowerShell 3.0 or higher. I do have the script check for PowerShell version requirements and will error out and stop if at least version 3.0 or higher is not detected.
 
 # Script Execution
 
