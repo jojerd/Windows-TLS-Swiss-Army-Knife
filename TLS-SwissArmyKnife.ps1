@@ -189,18 +189,18 @@ function DisableSSL {
     Write-Host "Disabling SSL 2.0 and SSL 3.0"
     Start-Sleep -Seconds 3
     Clear-Host
-    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     Write-Host " "
     Write-Host " "
@@ -230,16 +230,16 @@ function EnableTLS10 {
     }
     # If script is not executed as an Administrator, stop the script.
     else {
-        Write-Error 'This Script needs to be executed under Powershell with Administrative Privileges...' -ErrorAction Stop
+        Write-Error "This Script needs to be executed under Powershell with Administrative Privileges..." -ErrorAction Stop
     }
    
     $Writable = $true
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client")
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server”)
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     Write-Host " "
     Write-Host " "
@@ -269,16 +269,16 @@ function EnableTLS11 {
     }
     # If script is not executed as an Administrator, stop the script.
     else {
-        Write-Error 'This Script needs to be executed under Powershell with Administrative Privileges...' -ErrorAction Stop
+        Write-Error "This Script needs to be executed under Powershell with Administrative Privileges..." -ErrorAction Stop
     }
    
     $Writable = $true
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client")
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server”)
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     Write-Host " "
     Write-Host " "
@@ -309,12 +309,12 @@ function EnableTLS12 {
         Write-Error 'This Script needs to be executed under Powershell with Administrative Privileges...' -ErrorAction Stop
     }
     $Writable = $true
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client”)
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server”)
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
     # Have to tell .NET 3.5 and .NET 4.0/4.5 to use TLS 1.2 (I.E. SchUseStrongCrypto)
     $key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Wow6432Node\Microsoft\.NETFramework\v2.0.50727")
     $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
@@ -354,12 +354,12 @@ function DisableTLS10 {
     }
    
     $Writable = $true
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client")
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     Write-Host " "
     Write-Host " "
@@ -394,12 +394,12 @@ function DisableTLS11 {
     }
    
     $Writable = $true
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client")
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     Write-Host " "
     Write-Host " "
@@ -440,34 +440,34 @@ function DoItAll {
     Start-Sleep -Seconds 3
     Clear-Host
     #Disable SSL 2.0 and Disable SSL 3.0.
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client”)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client")
     $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client”)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server")
     $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     #Disable TLS 1.0 - BE VERY CAREFUL AS THIS CAN BREAK LEGACY APPLICATIONS!!!!!!!
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server”)
-    $Key.SetValue(“Enabled”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server")
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     #Enable TLS 1.2 as well as tell .NET to use Strong Cryptography
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client”)
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key = (Get-Item HKLM:\).OpenSubKey(“SYSTEM”, $Writable).CreateSubKey(“CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server”)
-    $Key.SetValue(“Enabled”, “1”, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue(“DisabledByDefault”, “0”, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server")
+    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
     # Have to tell .NET 3.5 and .NET 4.0/4.5 to use TLS 1.2 (I.E. SchUseStrongCrypto)
     $key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Wow6432Node\Microsoft\.NETFramework\v2.0.50727")
     $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
