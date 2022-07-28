@@ -3,6 +3,7 @@ Created By Josh Jerdon
 Created on 1/20/2022
 Version 1.0
 Version 1.01
+Version 1.02
 
 For Disabling SSL 2.0 / SSL 3.0 and Enabling TLS 1.2 for ADFS and Web Application Proxy Servers. I also created a function to test the server for currently
 enabled Protocols that will dump out to a CSV report.
@@ -52,10 +53,16 @@ Initial release
 
 Version 1.01: Added Enable TLS 1.0 switch as it was overlooked upon initial release. Fixed Typos in ReadMe.
 
+2022JUL28
+
+Version 1.02: Added Registry Protocol checker to pull individual keys to retrieve current configuration. Also added SystemDefaultTlsVersion when enabling TLS 1.2.
+
 #>
+
 [CmdletBinding()]
 param (
     [switch]$EnabledProtocols,
+    [switch]$PullRegistry,
     [switch]$DisableSSL,
     [switch]$EnableTLS10,
     [switch]$EnableTLS11,
@@ -156,6 +163,93 @@ function Get-EnabledProtocols {
         Exit
     }
 }
+
+function Get-RegistryInformation {
+    [CmdletBinding()]
+    Param
+    (
+        # Registry Path
+        [Parameter(Mandatory = $false,
+            Position = 0)]
+        [string]
+        $RegPath,
+    
+        # Registry Name
+        [Parameter(Mandatory = $false,
+            Position = 1)]
+        [string]
+        $RegName
+    )
+    $ErrorActionPreference = 0
+    $regItem = Get-ItemProperty -Path $RegPath -Name $RegName 
+    $output = "" | Select-Object Path, Name, Value
+    $output.Path = $RegPath
+    $output.Name = $RegName
+    
+    If ($regItem -eq $null) {
+        $output.Value = "Not Found"
+    }
+    Else {
+        $output.Value = $regItem.$RegName
+    }
+    $output
+}
+    
+$regSettings = @()
+$regKey = 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319'
+$regSettings += Get-RegistryInformation $regKey 'SystemDefaultTlsVersions'
+$regSettings += Get-RegistryInformation $regKey 'SchUseStrongCrypto'
+    
+$regKey = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+$regSettings += Get-RegistryInformation $regKey 'SystemDefaultTlsVersions'
+$regSettings += Get-RegistryInformation $regKey 'SchUseStrongCrypto'
+    
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+    
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+
+$regKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client'
+$regSettings += Get-RegistryInformation $regKey 'Enabled'
+$regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
+    
+$regSettings
+
+
+
+
+
 
 
 function DisableSSL {
@@ -315,11 +409,13 @@ function EnableTLS12 {
     $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server")
     $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
-    # Have to tell .NET 3.5 and .NET 4.0/4.5 to use TLS 1.2 (I.E. SchUseStrongCrypto)
-    $key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Wow6432Node\Microsoft\.NETFramework\v2.0.50727")
-    $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    # Have to tell .NET 4.0/4.5 to use TLS 1.2 (I.E. SchUseStrongCrypto) and set System Default TLS to 1.2
     $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Microsoft\.NETFramework\v4.0.30319")
     $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("WOW6432Node\Microsoft\.NETFramework\v4.0.30319")
+    $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
 
     Write-Host " "
@@ -468,11 +564,13 @@ function DoItAll {
     $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server")
     $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
-    # Have to tell .NET 3.5 and .NET 4.0/4.5 to use TLS 1.2 (I.E. SchUseStrongCrypto)
-    $key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Wow6432Node\Microsoft\.NETFramework\v2.0.50727")
-    $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    # Have to tell .NET 4.0/4.5 to use TLS 1.2 (I.E. SchUseStrongCrypto)
     $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Microsoft\.NETFramework\v4.0.30319")
     $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("WOW6432Node\Microsoft\.NETFramework\v4.0.30319")
+    $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
 
     Write-Host " "
     Write-Host " "
@@ -481,8 +579,9 @@ function DoItAll {
 
 }
 if ($EnabledProtocols) { Get-EnabledProtocols; Clear-Host; Exit }
+if ($PullRegistry) { Get-RegistryInformation; Exit }
 if ($DisableSSL) { DisableSSL; Clear-Host; Exit }
-if ($EnableTLS10) {EnableTLS10; Clear-Host; Exit }
+if ($EnableTLS10) { EnableTLS10; Clear-Host; Exit }
 if ($EnableTLS11) { EnableTLS11; Clear-Host; Exit }
 if ($EnableTLS12) { EnableTLS12; Clear-Host; Exit }
 if ($DisableTLS10) { DisableTLS10; Clear-Host; Exit }

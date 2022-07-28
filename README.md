@@ -17,6 +17,8 @@ Open a PowerShell Window as an Administrator and browse to the location the scri
 
 -EnabledProtocols: This will go through and check each individual protocol on the server to confirm what protocols are responding and what ones are currently disabled. This is useful to find which protocols are currently enabled. It will provide quite a bit of details, the IP Address, Port, Port Status, Certificate name, Thumbprint of the Certificate, Date certificate was issued, and date certificate is to expire, key length, signature, cipher used during handshake negotiation and Protocol used.
 
+-PullRegistry: This will query the registry for all known SSL / TLS security protocols and provide an output of registry values if the key exists.
+
 -DisableSSL: Just disables SSL 2.0 and SSL 3.0, it will not do anything outside of that.
 
 -DisableTLS10: Will just disable TLS 1.0 (BE VERY CAREFUL WITH THIS AS THIS CAN CAUSE LEGACY APPLICATIONS TO STOP WORKING!!!)
