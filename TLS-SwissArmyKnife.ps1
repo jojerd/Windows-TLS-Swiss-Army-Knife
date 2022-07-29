@@ -28,6 +28,8 @@ Switch Explaination:
 This is useful to find protocols are currently enabled. It will provide quite a bit of details, the IP Address, Port, Port Status, Certificate name, Thumbprint of the Certificate
 Date cert was issued, and date cert is to expire, key length, signature, cipher used during handshake negotiation and Protocol used.
 
+-PullRegistry: This will query the registry for all known SSL / TLS security protocols and provide an output of registry values if the key exists.
+
 -DisableSSL: Just disables SSL 2.0 and SSL 3.0, it will not do anything outside of that.
 
 -DisableTLS10: Will just disable TLS 1.0 (BE VERY CAREFUL WITH THIS AS THIS CAN CAUSE LEGACY APPLICATIONS TO STOP WORKING!!!)
@@ -245,12 +247,6 @@ $regSettings += Get-RegistryInformation $regKey 'Enabled'
 $regSettings += Get-RegistryInformation $regKey 'DisabledByDefault'
     
 $regSettings
-
-
-
-
-
-
 
 function DisableSSL {
     #Checking Powershell Version to Ensure Script Works as Intended.
