@@ -4,6 +4,7 @@ Created on 1/20/2022
 Version 1.0
 Version 1.01
 Version 1.02
+Version 1.03
 
 For Disabling SSL 2.0 / SSL 3.0 and Enabling TLS 1.2 for ADFS and Web Application Proxy Servers. I also created a function to test the server for currently
 enabled Protocols that will dump out to a CSV report.
@@ -58,6 +59,11 @@ Version 1.01: Added Enable TLS 1.0 switch as it was overlooked upon initial rele
 2022JUL28
 
 Version 1.02: Added Registry Protocol checker to pull individual keys to retrieve current configuration. Also added SystemDefaultTlsVersion when enabling TLS 1.2.
+
+2022JUL29
+
+Version 1.03: Added some additonal registry keys for enable TLS 1.2 for 32-bit Applications installed on 64-bit Operating System.
+              Also included 32-bit TLS 1.2 check in the -PullRegistry function.
 
 #>
 
@@ -198,6 +204,10 @@ function Get-RegistryInformation {
 }
     
 $regSettings = @()
+$regKey = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v2.0.50727'
+$regSettings += Get-RegistryInformation $regKey 'SystemDefaultTlsVersions'
+$regSettings += Get-RegistryInformation $regKey 'SchUseStrongCrypto'
+
 $regKey = 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319'
 $regSettings += Get-RegistryInformation $regKey 'SystemDefaultTlsVersions'
 $regSettings += Get-RegistryInformation $regKey 'SchUseStrongCrypto'
@@ -409,6 +419,10 @@ function EnableTLS12 {
     $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Microsoft\.NETFramework\v4.0.30319")
     $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    # Enable TLS 1.2 for 32-bit applications installed on a 64-bit OS.
+    $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Wow6432Node\Microsoft\.NETFramework\v2.0.50727")
+    $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("WOW6432Node\Microsoft\.NETFramework\v4.0.30319")
     $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
@@ -562,6 +576,10 @@ function DoItAll {
     $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
     # Have to tell .NET 4.0/4.5 to use TLS 1.2 (I.E. SchUseStrongCrypto)
     $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Microsoft\.NETFramework\v4.0.30319")
+    $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    # Enable TLS 1.2 for 32-bit applications installed on a 64-bit OS.
+    $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("Wow6432Node\Microsoft\.NETFramework\v2.0.50727")
     $Key.SetValue("SchUseStrongCrypto", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key.SetValue("SystemDefaultTlsVersions", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key = (Get-Item HKLM:\).OpenSubKey("SOFTWARE", $Writable).CreateSubKey("WOW6432Node\Microsoft\.NETFramework\v4.0.30319")
