@@ -11,27 +11,43 @@ PowerShell 3.0 or higher. I do have the script check for PowerShell version requ
 
 Open a PowerShell Window as an Administrator and browse to the location the script is saved and execute it like the example below:
 
-.\TLS-SwissArmyKnife.ps1 -EnableTLS12
+.\TLS-SwissArmyKnife.ps1, or right click run in PowerShell. If it doesn't open, or closes immediately after execution it likely means that PowerShell was not ran as an Administartor
 
-# Switch Explaination
+# Option Explaination
 
--EnabledProtocols: This will go through and check each individual protocol on the server to confirm what protocols are responding and what ones are currently disabled. This is useful to find which protocols are currently enabled. It will provide quite a bit of details, the IP Address, Port, Port Status, Certificate name, Thumbprint of the Certificate, Date certificate was issued, and date certificate is to expire, key length, signature, cipher used during handshake negotiation and Protocol used.
+Retrieve Current SCHANNEL Configuration
+This option will go through and pull the registry of SCHANNEL protocols for .NET and standard TLS/SSL keys and provide you
+and output of the current configured values or "NOT FOUND" if no key or value was set.
 
--PullRegistry: This will query the registry for all known SSL / TLS security protocols and provide an output of registry values if the key exists.
+Disable SSL (2.0 and 3.0) 
+On modern Windows Operating Systems (2016+) SSL 3.0 is disabled by default, and SSL 2.0 is completely deprecated and unsupported. However for Windows 2012 and 2012 R2 
+those keys should be set to be disabled.
 
--DisableSSL: Just disables SSL 2.0 and SSL 3.0, it will not do anything outside of that.
+Enable TLS 1.0
+This is enabled by default, but is included in case you would like to re-enable in the off chance that it was disabled by accident previously.
 
--DisableTLS10: Will just disable TLS 1.0 (BE VERY CAREFUL WITH THIS AS THIS CAN CAUSE LEGACY APPLICATIONS TO STOP WORKING!!!)
+Enable TLS 1.1
+This is enabled by default, but is included in case you would like to re-enable in the off chance that it was disabled by accident previously.
 
--EnableTLS10: Enables TLS 1.0, usually is already enabled by default but just in case you want to quickly reverse a TLS 1.0 disable change.
+Enable TLS 1.2
+On legacy operating systems this needs to ran to enable TLS. On Modern Operating Systems this also needs to be ran, but from a more .NET centric point of view
+Out of the box Windows Server 2016+ supports TLS 1.2, however .NET needs to be instructed to use TLS 1.2 because out of the box its default is TLS 1.0
 
--EnableTLS11: Enables TLS 1.1, usually is already enabled by default but just in case you want to quickly reverse a TLS 1.1 disable change.
+Disable TLS 1.0
+This will disable TLS 1.0, I do have it prompt to verify you are sure you want to disable TLS 1.0 as this can break legacy applications who still rely upon TLS 1.0.
 
--EnableTLS12: Just enables TLS 1.2 and will not do anything outside of that.
+Disable TLS 1.1
+This will disable TLS 1.1.
 
--DisableTLS11: This will disable TLS 1.1, while not required is an option in case you want to test.
+Disable all protocols only enable TLS 1.2. 
+As the option suggests this will disable SSL 2.0/3.0, TLS 1.0 and TLS 1.1 and will only have TLS 1.2.
 
--SecureMe: Disables SSL 2.0 / SSL 3.0, TLS 1.0 and enables TLS 1.2. It does not touch TLS 1.1. You can disable TLS 1.1 with the above switch if you choose. ONLY USE THIS SWITCH IF YOU ARE SURE YOU HAVE NO LEGACY APPLICATIONS THAT REQUIRE TLS 1.0!!!!!!
+Test Enabled SCHANNEL protocols
+This will go through and make a loop back connection to itself over port 443 (so its encouraged to be ran from a system hosting a service over port 443) and generate a report
+via CSV of the protocols that were able to make a connection. It will detail the computer name, host name of the service, IP address, port, port status (Opened or Closed),
+Information regarding the certificate presented (subject, thumbprint, NotBefore, NotAfter, public key), Signature Algorithm, connected cipher, protocol that tested, and protocol
+status.
+
 
 
 
