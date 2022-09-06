@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Option Explaination:
+Option Explanation:
 
 Retrieve Current SCHANNEL Configuration
 This option will go through and pull the registry of SCHANNEL protocols for .NET and standard TLS/SSL keys and provide you
@@ -117,7 +117,7 @@ function Write-Log {
         else { Write-Verbose  $logstring }
     }
 }
- # Provides assistance in pulling information from the registry
+# Provides assistance in pulling information from the registry
 function Get-RegistryInformation {
     [CmdletBinding()]
     Param
@@ -163,7 +163,7 @@ function Restart-ComputerNotification {
 
     }
     process {
-            # If yes, log that yes was selected and proceed with restarting the computer.
+        # If yes, log that yes was selected and proceed with restarting the computer.
         if ($PopupResult -eq "Yes") {
             Write-Log -String "User selected Yes to restart the computer now" -Name $Logname
             Restart-Computer
