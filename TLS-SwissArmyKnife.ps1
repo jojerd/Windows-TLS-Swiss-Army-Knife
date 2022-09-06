@@ -509,15 +509,15 @@ function Disable-Multiple {
     # Disable TLS 1.1
     Write-Log -String "Disabling TLS 1.1" -Name $Logname
     $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client")
-    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server")
-    $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
-    $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("Enabled", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
+    $Key.SetValue("DisabledByDefault", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     Write-log -String "TLS 1.1 keys have been set to be disabled" -Name $Logname
 
     # Enable TLS 1.2 as well as tell .NET to use Strong Cryptography
-    Write-log -String "Enablign TLS 1.2" -Name $Logname
+    Write-log -String "Enabling TLS 1.2" -Name $Logname
     $Key = (Get-Item HKLM:\).OpenSubKey("SYSTEM", $Writable).CreateSubKey("CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client")
     $Key.SetValue("Enabled", "1", [Microsoft.Win32.RegistryValueKind]::DWORD)
     $Key.SetValue("DisabledByDefault", "0", [Microsoft.Win32.RegistryValueKind]::DWORD)
