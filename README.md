@@ -13,7 +13,7 @@ Open a PowerShell Window as an Administrator and browse to the location the scri
 
 .\TLS-SwissArmyKnife.ps1, or right click run in PowerShell. If it doesn't open, or closes immediately after execution it likely means that PowerShell was not ran as an Administartor
 
-# Option Explaination
+# Option Explanation
 
 Retrieve Current SCHANNEL Configuration
 This option will go through and pull the registry of SCHANNEL protocols for .NET and standard TLS/SSL keys and provide you
