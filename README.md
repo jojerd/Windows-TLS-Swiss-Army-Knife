@@ -1,6 +1,9 @@
 # Windows-TLS-Swiss-Army-Knife
 Windows PowerShell script to Enable TLS 1.2 and Disable legacy protocols. This can be run on any Windows Server Operating System with PowerShell 3.0
-or higher. Does require Administrative Privileges to be used during execution if you are going to be making changes as this script make changes to the registry.
+or higher. Does require Administrative Privileges to be used during execution. The changes made for TLS are to enable BOTH the Client and Server registry
+keys. This is done even on servers as sometimes the server is also the client. Example being communicating with Azure Active Directory, or running a PowerShell
+session and connecting to Azure (connect-msolservice). In those instances the server is acting as a client, so its a best practice to enable both the Client and Server
+TLS registry keys.
 
 # Requirements
 
@@ -9,7 +12,7 @@ PowerShell 3.0 or higher. I do have the script check for PowerShell version requ
 
 # Script Execution
 
-Open a PowerShell Window as an Administrator and browse to the location the script is saved and execute it like the example below:
+Open a PowerShell Window as an Administrator and browse to the location where the script is saved and execute it like the example below:
 
 .\TLS-SwissArmyKnife.ps1, or right click run in PowerShell. If it doesn't open, or closes immediately after execution it likely means that PowerShell was not ran as an Administartor
 
