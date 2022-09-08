@@ -20,11 +20,11 @@ Open a PowerShell Window as an Administrator and browse to the location where th
 
 Retrieve Current SCHANNEL Configuration
 This option will go through and pull the registry of SCHANNEL protocols for .NET and standard TLS/SSL keys and provide you
-and output of the current configured values or "NOT FOUND" if no key or value was set.
+an output of the current configured values or "NOT FOUND" if no key or value was set.
 
 Disable SSL (2.0 and 3.0) 
 On modern Windows Operating Systems (2016+) SSL 3.0 is disabled by default, and SSL 2.0 is completely deprecated and unsupported. However for Windows 2012 and 2012 R2 
-those keys should be set to be disabled.
+those keys should be set to disabled.
 
 Enable TLS 1.0
 This is enabled by default, but is included in case you would like to re-enable in the off chance that it was disabled by accident previously.
